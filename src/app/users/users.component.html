@@ -1,0 +1,42 @@
+<br>
+<div fxLayoutAlign="center center">
+  <mat-card fxFlex.xs="100%" fxFlex.gt-md="80%" fxFlex.gt-sm="80%" fxFlex.gt-xs="90%" fxFlex="1200px">
+    <mat-card-title>Users</mat-card-title>
+    <mat-card-content>
+      <section>
+        <mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="username">
+            <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.username }}</mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="fullName">
+          <mat-header-cell *matHeaderCellDef >Full Name</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.name }}</mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="viewposts" >
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell 
+              *matCellDef="let user" 
+              style="padding-top: 15px;" 
+              fxLayoutAlign="flex-end"><a routerLink="/{{user.id}}/posts">View Posts</a></mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+      </section>   
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+
