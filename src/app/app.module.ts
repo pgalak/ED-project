@@ -11,13 +11,15 @@ import { UsersComponent } from './users/users.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './navigation/header/header.component';
 import { UserPostsComponent } from './users/user-posts/user-posts.component';
+import { PostCommentsComponent } from './users/post-comments/post-comments.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UsersComponent,
     HeaderComponent,
-    UserPostsComponent
+    UserPostsComponent,
+    PostCommentsComponent
   ],
   imports: [
     BrowserModule,

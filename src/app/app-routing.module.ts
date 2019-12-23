@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UsersComponent } from './users/users.component';
+import { UserPostsComponent } from './users/user-posts/user-posts.component';
+import { PostCommentsComponent } from './users/post-comments/post-comments.component';
 
 const routes: Routes = [
-  { path: '', component: UsersComponent}
+  { path: '', component: UsersComponent},
+  { path: ':userId/posts', component: UserPostsComponent},
+  { path: ':userId/posts/:postId/comments', component: PostCommentsComponent}
 ]
 
 @NgModule({

@@ -1,1 +1,22 @@
-<p>user-posts works!</p>
+<div fxLayoutAlign="center center" style="padding-top: 2%; padding-bottom: 1%;">
+  <mat-card fxFlex.xs="100%" fxFlex.gt-md="80%" fxFlex.gt-sm="80%" fxFlex.gt-xs="90%" fxFlex="1200px">
+    <mat-card-header>
+      <mat-card-title>
+        {{ userName }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ userEmail }}
+      </mat-card-subtitle>
+      <img mat-card-avatar src="{{ avatar }}">
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <h2>Posts</h2>
+    <mat-card-content>
+      <mat-list *ngFor="let post of posts">
+        <mat-list-item><a routerLink="/{{id}}/posts/{{post.id}}/comments">{{ post.title }}</a></mat-list-item>
+        <mat-list-item>{{ post.createdAt | date }}</mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </mat-card-content>
+   </mat-card>
+</div>

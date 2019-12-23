@@ -1,5 +1,8 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
+
+import { Subscription } from 'rxjs';
+
 import { UserService } from './user.service';
 
 @Component({
@@ -7,20 +10,18 @@ import { UserService } from './user.service';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit, AfterViewInit {
+export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns = ['username', 'fullName', 'email', 'viewposts'];
   dataSource = new MatTableDataSource<any>();
-  users: {}[] = [];
+  userSub: Subscription;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.fetch().subscribe(data => {
-      this.dataSource.data = Object.values(data['items']);
-      // this.users = Object.values(data['items']);
-      // console.log(Object.values(data['items']));      
+    this.userSub = this.userService.fetch().subscribe(data => {
+      this.dataSource.data = Object.values(data['items']); 
     })
   }
 
@@ -28,4 +29,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+  }
 }

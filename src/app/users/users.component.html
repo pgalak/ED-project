@@ -25,7 +25,11 @@
             <mat-cell 
               *matCellDef="let user" 
               style="padding-top: 15px;" 
-              fxLayoutAlign="flex-end"><a routerLink="/{{user.id}}/posts">View Posts</a></mat-cell>
+              fxLayoutAlign="flex-end">
+              <a routerLink="/{{user.id}}/posts">
+                View Posts
+              </a>
+            </mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
