@@ -4,6 +4,7 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Subscription } from 'rxjs';
 
 import { UserService } from './user.service';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -14,19 +15,46 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns = ['username', 'fullName', 'email', 'viewposts'];
   dataSource = new MatTableDataSource<any>();
   userSub: Subscription;
+  isLoading: boolean;
+  resultsLength = 0;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.userSub = this.userService.fetch().subscribe(data => {
-      this.dataSource.data = Object.values(data['items']); 
-    })
+    this.dataSource.paginator = this.paginator;
+    this.userSub = this.paginator.page.pipe(
+      switchMap(() => {
+        this.isLoading = true;
+        return this.userService.fetch(this.paginator.pageIndex, this.paginator.pageSize)
+      }),
+      map(data => {
+        this.isLoading = false;
+        this.resultsLength = data['total'];
+        return data;
+      })
+    ).subscribe(data => { 
+      this.dataSource.data = Object.values(data['items']);
+    });
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
+    // this.userSub = this.paginator.page.pipe(
+    //   switchMap(() => {
+    //     this.isLoading = true;
+    //     return this.userService.fetch(this.paginator.pageIndex, this.paginator.pageSize)
+    //   }),
+    //   map(data => {
+    //     this.isLoading = false;
+    //     this.resultsLength = data['total'];
+    //     return data;
+    //   })
+    // ).subscribe(data => { 
+    //   this.dataSource.data = Object.values(data['items']);
+    // });
+    
   }
 
   ngOnDestroy() {

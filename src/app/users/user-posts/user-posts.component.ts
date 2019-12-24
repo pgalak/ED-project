@@ -20,6 +20,7 @@ export class UserPostsComponent implements OnInit, OnDestroy {
   posts: UserPosts[];
   userName: string;
   userEmail: string;
+  isLoading: boolean = true;
 
   constructor(private postsService: UsersPostsService,
               private route: ActivatedRoute) { }
@@ -27,6 +28,7 @@ export class UserPostsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userDataNPosts$ = this.route.params.pipe(
       switchMap((params: Params) => {
+        this.isLoading = true;
         this.id = params['userId'];
         return this.postsService.fetchSelectedUserDataNPosts(this.id);
       })
@@ -37,6 +39,7 @@ export class UserPostsComponent implements OnInit, OnDestroy {
       this.userEmail = data[1].email;
       this.avatar = data[1].avatar;
       this.posts = data[0];
+      this.isLoading = false;
     });
   }
 
