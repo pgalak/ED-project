@@ -1,7 +1,7 @@
-export interface UserPosts {
-  id: number,
-  userId: number,
-  createdAt: Date,
-  title: string,
-  body: string
+export class User {
+  id: number;
+  name: string;
+  email: string;
+  avatar: string;
+  username: string;
 }

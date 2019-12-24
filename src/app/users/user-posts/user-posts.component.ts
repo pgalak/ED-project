@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { UsersPostsService } from './user-posts.service';
-import { UserPosts } from 'src/app/models/user.interface';
+import { UserPosts } from 'src/app/models/user-posts.interface';
 
 @Component({
   selector: 'app-user-posts',
