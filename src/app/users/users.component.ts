@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { Component, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { MatPaginator } from '@angular/material';
 
-import { Subscription, merge } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { switchMap, startWith } from 'rxjs/operators';
 
 import { UserService } from './user.service';
-import { switchMap, map } from 'rxjs/operators';
 import { User } from '../models/user.interface';
 
 @Component({
@@ -12,11 +12,10 @@ import { User } from '../models/user.interface';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent implements AfterViewInit, OnDestroy {
   displayedColumns = ['username', 'fullName', 'email', 'viewposts'];
-  // dataSource = new MatTableDataSource<any>();
   userSub: Subscription;
-  isLoading: boolean;
+  isLoading = true;
   resultsLength = 0;
   data: User[] = [];
 
@@ -24,63 +23,21 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit() {
-    // this.dataSource.paginator = this.paginator;
-    // console.log('oninit')
-    // this.userSub = this.paginator.page.pipe(
-    //   switchMap(() => {
-    //     this.isLoading = true;
-    //     return this.userService.fetch(this.paginator.pageIndex, this.paginator.pageSize)
-    //   }),
-    //   map(data => {
-    //     this.isLoading = false;
-    //     this.resultsLength = data['total'];
-    //     return data;
-    //   })
-    // ).subscribe(data => { 
-    //   this.dataSource.data = Object.values(data['items']);
-    //   console.log(this.dataSource.data);
-    // });
-    merge(this.paginator.page).pipe(
+  ngAfterViewInit() {
+    this.userSub = this.paginator.page.pipe(
+      startWith({}),
       switchMap(() => {
         this.isLoading = true;
-        return this.userService!.fetch(this.paginator.pageIndex, this.paginator.pageSizeOptions)
-      }),
-      map(data => {
-        this.isLoading = false;
-        this.resultsLength = data.total;
-
-        return data.items;
+        return this.userService!.fetch(this.paginator.pageIndex, this.paginator.pageSize)
       })
     ).subscribe(data => { 
-      this.data = data;
-      // this.dataSource.data = Object.values(data['items']);
+      this.isLoading = false;
+      this.resultsLength = data.total;
+      this.data = data.items;
     });
   }
 
-  // ngAfterViewInit() {
-  //   console.log('view init')
-  //   // this.dataSource.paginator = this.paginator;
-  //   // this.userSub = this.paginator.page.pipe(
-  //   merge(this.paginator.page).pipe(
-  //     switchMap(() => {
-  //       this.isLoading = true;
-  //       return this.userService!.fetch(this.paginator.pageIndex, this.paginator.pageSize)
-  //     }),
-  //     map(data => {
-  //       this.isLoading = false;
-  //       this.resultsLength = data.total;
-
-  //       return data.items;
-  //     })
-  //   ).subscribe(data => { 
-  //     this.data = data;
-  //     // this.dataSource.data = Object.values(data['items']);
-  //   });
-    
-  // }
-
   ngOnDestroy() {
-    // this.userSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 }
