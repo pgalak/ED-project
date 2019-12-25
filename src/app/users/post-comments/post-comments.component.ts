@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-
 import { PostCommentsService } from './post-comments.service';
 
 @Component({
@@ -14,33 +11,19 @@ import { PostCommentsService } from './post-comments.service';
 export class PostCommentsComponent implements OnInit, OnDestroy {
   sub: Subscription;
   post$: Observable<any>;
-  userId: number;
-  postId: number;
-  postDate: Date;
-  postTitle: string;
-  postBody: string;
-  comments: {}[];
-  isLoading: boolean = true;
+  comments$: Observable<any[]>;
+  userId: string;
+  postId: string;
 
   constructor(private route: ActivatedRoute,
               private postService: PostCommentsService) { }
 
   ngOnInit() {
-    this.post$ = this.route.params.pipe(
-      switchMap((params: Params) => {
-        this.isLoading = true;
-        this.userId = params['userId'];
-        this.postId = params['postId'];
-        return this.postService.fetchPostAndComments(this.userId, this.postId);
-      })
-    )
-
-    this.sub = this.post$.subscribe(data => {
-      this.postDate = data[0].createdAt;
-      this.postTitle = data[0].title;
-      this.postBody = data[0].body;
-      this.comments = data[1];
-      this.isLoading = false;
+    this.sub = this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.userId = paramMap.get('userId');
+      this.postId = paramMap.get('postId');
+      this.post$ = this.postService.fetchPost(this.userId, this.postId)
+      this.comments$ = this.postService.fetchComments(this.userId, this.postId);
     });
   }
 

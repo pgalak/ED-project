@@ -13,6 +13,7 @@
 # firebase
 .firebase
 .firebaserc
+firebase-debug.log
 firebase.json
 
 # profiling files

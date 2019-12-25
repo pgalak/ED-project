@@ -8,6 +8,7 @@ a:active {
   color: rgb(83, 7, 134);
   cursor: pointer;
 }
+
 .loading-shade {
   position: absolute;
   top: 0;

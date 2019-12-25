@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-
 import { UsersPostsService } from './user-posts.service';
-import { UserPosts } from 'src/app/models/user-posts.interface';
+import { User } from 'src/app/models/user';
+import { UserPosts } from 'src/app/models/user-posts';
 
 @Component({
   selector: 'app-user-posts',
@@ -13,33 +11,19 @@ import { UserPosts } from 'src/app/models/user-posts.interface';
   styleUrls: ['./user-posts.component.css']
 })
 export class UserPostsComponent implements OnInit, OnDestroy {
-  id: number = null;
-  avatar: string = '';
-  userDataNPosts$: Observable<any>;
+  id: string;
   sub: Subscription;
-  posts: UserPosts[];
-  userName: string;
-  userEmail: string;
-  isLoading: boolean = true;
+  user$: Observable<User>;
+  posts$: Observable<UserPosts[]>;
 
   constructor(private postsService: UsersPostsService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.userDataNPosts$ = this.route.params.pipe(
-      switchMap((params: Params) => {
-        this.isLoading = true;
-        this.id = params['userId'];
-        return this.postsService.fetchSelectedUserDataNPosts(this.id);
-      })
-    );
-
-    this.sub = this.userDataNPosts$.subscribe(data => {
-      this.userName = data[1].name;
-      this.userEmail = data[1].email;
-      this.avatar = data[1].avatar;
-      this.posts = data[0];
-      this.isLoading = false;
+    this.sub = this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.id = paramMap.get('userId');
+      this.user$ = this.postsService.fetchUserData(this.id);
+      this.posts$ = this.postsService.fetchUserPosts(this.id);
     });
   }
 

@@ -1,21 +1,21 @@
 <div fxLayoutAlign="center center">
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <mat-spinner *ngIf="!((user$ | async) && (posts$ | async))"></mat-spinner>
 </div>
-<div fxLayoutAlign="center center" style="padding-top: 2%; padding-bottom: 1%;" *ngIf="!isLoading">
+<div fxLayoutAlign="center center" style="padding-top: 2%; padding-bottom: 1%;" *ngIf="((user$ | async) && (posts$ | async))">
   <mat-card fxFlex.xs="100%" fxFlex.gt-md="80%" fxFlex.gt-sm="80%" fxFlex.gt-xs="90%" fxFlex="1200px">
     <mat-card-header>
       <mat-card-title>
-        {{ userName }}
+        {{(user$ | async)?.name}}
       </mat-card-title>
       <mat-card-subtitle>
-        {{ userEmail }}
+        {{(user$ | async)?.email}}
       </mat-card-subtitle>
-      <img mat-card-avatar src="{{ avatar }}">
+      <img mat-card-avatar src="{{(user$ | async)?.avatar}}">
     </mat-card-header>
     <mat-divider></mat-divider>
     <h2>Posts</h2>
     <mat-card-content>
-      <mat-list *ngFor="let post of posts">
+      <mat-list *ngFor="let post of posts$ | async">
         <mat-list-item><a routerLink="/{{id}}/posts/{{post.id}}/comments">{{ post.title }}</a></mat-list-item>
         <mat-list-item>{{ post.createdAt | date }}</mat-list-item>
         <mat-divider></mat-divider>

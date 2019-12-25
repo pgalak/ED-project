@@ -1,17 +1,19 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { forkJoin } from 'rxjs';
+import { Observable } from 'rxjs';
+import { User } from 'src/app/models/user';
+import { UserPosts } from 'src/app/models/user-posts';
 
 @Injectable({providedIn: 'root'})
 export class UsersPostsService {
 
   constructor(private http: HttpClient) {}
 
-  fetchSelectedUserDataNPosts(id: number) {
-    let userPosts = this.http.get(`http://5da8543fe44c790014cd4b86.mockapi.io/users/${id}/posts`);
+  fetchUserData(id: string): Observable<User> {
+    return this.http.get<User>(`http://5da8543fe44c790014cd4b86.mockapi.io/users/${id}`);
+  }
 
-    let userData = this.http.get(`http://5da8543fe44c790014cd4b86.mockapi.io/users/${id}`);
-    
-    return forkJoin([userPosts, userData]);
+  fetchUserPosts(id: string): Observable<UserPosts[]> {
+    return this.http.get<UserPosts[]>(`http://5da8543fe44c790014cd4b86.mockapi.io/users/${id}/posts`);
   }
 }
