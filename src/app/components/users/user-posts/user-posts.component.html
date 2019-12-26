@@ -2,7 +2,8 @@
 <div fxLayoutAlign="center center">
   <mat-spinner *ngIf="!((user$ | async) && (posts$ | async))"></mat-spinner>
 </div>
-<div fxLayoutAlign="center center" style="padding-top: 2%; padding-bottom: 1%;" *ngIf="((user$ | async) && (posts$ | async))">
+<div fxLayoutAlign="center center" style="padding-top: 2%; padding-bottom: 1%;"
+  *ngIf="((user$ | async) && (posts$ | async))">
   <mat-card fxFlex.xs="100%" fxFlex.gt-md="80%" fxFlex.gt-sm="80%" fxFlex.gt-xs="90%" fxFlex="1200px">
     <mat-card-header>
       <mat-card-title>
@@ -22,5 +23,5 @@
         <mat-divider></mat-divider>
       </mat-list>
     </mat-card-content>
-   </mat-card>
+  </mat-card>
 </div>

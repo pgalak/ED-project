@@ -1,4 +1,4 @@
-export class UserPosts {
+export class UserPost {
   id: number;
   userId: number;
   createdAt: Date;

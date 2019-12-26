@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
-import { PostCommentsService } from './post-comments.service';
+import { PostCommentsService } from 'src/app/services/post-comments.service';
+import { UserComment } from 'src/app/models/user-comment';
+import { UserPost } from 'src/app/models/user-post';
 
 @Component({
   selector: 'app-post-comments',
@@ -10,8 +12,8 @@ import { PostCommentsService } from './post-comments.service';
 })
 export class PostCommentsComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  post$: Observable<any>;
-  comments$: Observable<any[]>;
+  post$: Observable<UserPost>;
+  comments$: Observable<UserComment[]>;
   userId: string;
   postId: string;
 
@@ -22,7 +24,7 @@ export class PostCommentsComponent implements OnInit, OnDestroy {
     this.sub = this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
       this.postId = paramMap.get('postId');
-      this.post$ = this.postService.fetchPost(this.userId, this.postId)
+      this.post$ = this.postService.fetchPost(this.userId, this.postId);
       this.comments$ = this.postService.fetchComments(this.userId, this.postId);
     });
   }

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { UsersPostsService } from './user-posts.service';
 import { User } from 'src/app/models/user';
-import { UserPosts } from 'src/app/models/user-posts';
+import { UserPost } from 'src/app/models/user-post';
+import { UsersPostsService } from 'src/app/services/user-posts.service';
 
 @Component({
   selector: 'app-user-posts',
@@ -14,7 +14,7 @@ export class UserPostsComponent implements OnInit, OnDestroy {
   id: string;
   sub: Subscription;
   user$: Observable<User>;
-  posts$: Observable<UserPosts[]>;
+  posts$: Observable<UserPost[]>;
 
   constructor(private postsService: UsersPostsService,
               private route: ActivatedRoute) { }

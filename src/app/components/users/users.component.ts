@@ -1,9 +1,9 @@
 import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { UserService } from './user.service';
-import { User } from '../models/user';
-import { MockApi } from '../models/mockApi';
+import { User } from 'src/app/models/user';
+import { MockApi } from 'src/app/models/mockApi';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-users',
