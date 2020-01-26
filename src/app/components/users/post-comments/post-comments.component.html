@@ -1,49 +1,54 @@
 <br>
-<div fxLayoutAlign="center center">
-  <mat-spinner *ngIf="!((post$ | async) && (comments$ | async))"></mat-spinner>
-</div>
-<section *ngIf="((post$ | async) && (comments$ | async))">
-  <div>
-    <h2 style="padding-left: 5%">Post</h2>
-  </div>
+<ng-container *ngIf="data$ | async as data; else loading">
+  <section>
+    <div>
+      <h2 style="padding-left: 5%">Post</h2>
+    </div>
+    <div fxLayoutAlign="center center">
+      <mat-card fxFlex.xs="100%" fxFlex.gt-md="90%" fxFlex.gt-sm="90%" fxFlex.gt-xs="90%" fxFlex="1300px">
+        <mat-card-header>
+          <mat-card-title>
+            {{ data.post.title }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ data.post.createdAt | date }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div style="padding-left: 1%;">
+            {{ data.post.body }}
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div>
+      <h2 style="padding-left: 5%">Comments
+        <p style="opacity: 0.5; display: inline;">({{ data.comments.length }})</p>
+      </h2>
+    </div>
+    <div fxLayoutAlign="center center" style="padding-bottom: 20px;" *ngFor="let comment of data.comments">
+      <mat-card fxFlex.xs="100%" fxFlex.gt-md="90%" fxFlex.gt-sm="90%" fxFlex.gt-xs="90%" fxFlex="1300px">
+        <mat-card-header>
+          <mat-card-title>
+            {{ comment.name }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{comment.createdAt | date}}
+          </mat-card-subtitle>
+          <img mat-card-avatar src="{{comment.avatar}}">
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            {{ comment.body }}
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <br>
+    </div>
+  </section>
+</ng-container>
+<ng-template #loading>
   <div fxLayoutAlign="center center">
-    <mat-card fxFlex.xs="100%" fxFlex.gt-md="90%" fxFlex.gt-sm="90%" fxFlex.gt-xs="90%" fxFlex="1300px">
-      <mat-card-header>
-        <mat-card-title>
-          {{ (post$ | async)?.title }}
-        </mat-card-title>
-        <mat-card-subtitle>
-          {{ (post$ | async)?.createdAt | date }}
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div style="padding-left: 1%;">
-          {{ (post$ | async)?.body}}
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <mat-spinner></mat-spinner>
   </div>
-
-  <div>
-    <h2 style="padding-left: 5%">Comments <p style="opacity: 0.5; display: inline;">({{ (comments$ | async)?.length }})</p></h2>
-  </div>
-  <div fxLayoutAlign="center center" style="padding-bottom: 20px;" *ngFor="let comment of comments$ | async">
-    <mat-card fxFlex.xs="100%" fxFlex.gt-md="90%" fxFlex.gt-sm="90%" fxFlex.gt-xs="90%" fxFlex="1300px">
-      <mat-card-header>
-        <mat-card-title>
-          {{ comment.name }}
-        </mat-card-title>
-        <mat-card-subtitle>
-          {{comment.createdAt | date}}
-        </mat-card-subtitle>
-        <img mat-card-avatar src="{{comment.avatar}}">
-      </mat-card-header>
-      <mat-card-content>
-        <div>
-          {{ comment.body }}
-        </div>
-      </mat-card-content>
-    </mat-card>
-    <br>
-  </div>
-</section>
+</ng-template>
