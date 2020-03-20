@@ -7,4 +7,3 @@ export class UserComment {
   email: string;
   body: string;
 }
-

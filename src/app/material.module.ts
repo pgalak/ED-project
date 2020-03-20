@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from "@angular/core";
 import {
   MatButtonModule,
   MatFormFieldModule,
@@ -8,7 +8,7 @@ import {
   MatCardModule,
   MatListModule,
   MatProgressSpinnerModule
-} from '@angular/material';
+} from "@angular/material";
 
 @NgModule({
   imports: [
@@ -32,4 +32,4 @@ import {
     MatProgressSpinnerModule
   ]
 })
-export class MaterialModule { }
+export class MaterialModule {}
