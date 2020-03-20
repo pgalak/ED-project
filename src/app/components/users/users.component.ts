@@ -17,7 +17,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   resultsLength = 0;
   data: User[] = [];
-
+  // comment
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(private userService: UserService) {}
